@@ -6,6 +6,13 @@ public class PlayerController : MonoBehaviour
 {//SerializeField -> 외부 스크립트에서 접근 불가능,  inspector창에서 접근 가능
     [SerializeField] Transform tf_Crosshair;
 
+    [SerializeField] Transform tf_Cam; //Main camera...
+
+    [SerializeField] float sightSensitivity; //고개 움직임,속도 규정 할 변수
+    [SerializeField] float looktLimitX; //움직임 제한
+    [SerializeField] float lookLimitY;
+    float currentAngleX;  //얼만큼 고개를 돌렸는지 그 값을 기억
+    float currentAngleY;
     //private void Awake()
     //{
     //    Screen.sleepTimeout = SleepTimeout.NeverSleep; //게임 실행 중 화면이 꺼지지 않도록...
@@ -14,6 +21,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {//매 프레임마다 마우스의 움직임에 따라 움직이도록...
         CrosshairMoving();
+        ViewMoving();
+    }
+
+    void ViewMoving()
+    {//wasd키랑 Crosshair위치를 기반으로 
+        if (tf_Crosshair.localPosition.x > (Screen.width / 2 - 100) || tf_Crosshair.localPosition.x < (Screen.width / 2 + 100))
+        {
+            currentAngleY += (tf_Crosshair.localPosition.x > 0) ? sightSensitivity : -sightSensitivity;
+        }
+
     }
 
     void CrosshairMoving()
