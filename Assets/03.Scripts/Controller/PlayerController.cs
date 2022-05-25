@@ -1,46 +1,48 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
-{//SerializeField -> ¿ÜºÎ ½ºÅ©¸³Æ®¿¡¼­ Á¢±Ù ºÒ°¡´É,  inspectorÃ¢¿¡¼­ Á¢±Ù °¡´É
+{//SerializeField -> ì™¸ë¶€ ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì ‘ê·¼ ë¶ˆê°€ëŠ¥,  inspectorì°½ì—ì„œ ì ‘ê·¼ ê°€ëŠ¥
     [SerializeField] Transform tf_Crosshair;
 
     [SerializeField] Transform tf_Cam; //Main camera...
 
-    [SerializeField] float sightSensitivity; //°í°³ ¿òÁ÷ÀÓ,¼Óµµ ±ÔÁ¤ ÇÒ º¯¼ö
-    [SerializeField] float looktLimitX; //¿òÁ÷ÀÓ Á¦ÇÑ
+    [SerializeField] float sightSensitivity; //ê³ ê°œ ì›€ì§ì„,ì†ë„ ê·œì • í•  ë³€ìˆ˜
+    [SerializeField] float looktLimitX; //ì›€ì§ì„ ì œí•œ
     [SerializeField] float lookLimitY;
-    float currentAngleX;  //¾ó¸¸Å­ °í°³¸¦ µ¹·È´ÂÁö ±× °ªÀ» ±â¾ï
+    float currentAngleX;  //ì–¼ë§Œí¼ ê³ ê°œë¥¼ ëŒë ¸ëŠ”ì§€ ê·¸ ê°’ì„ ê¸°ì–µ
     float currentAngleY;
     //private void Awake()
     //{
-    //    Screen.sleepTimeout = SleepTimeout.NeverSleep; //°ÔÀÓ ½ÇÇà Áß È­¸éÀÌ ²¨ÁöÁö ¾Êµµ·Ï...
-    //    Screen.SetResolution(720, 1080, true); //È­¸é ¼³Á¤
+    //    Screen.sleepTimeout = SleepTimeout.NeverSleep; //ê²Œì„ ì‹¤í–‰ ì¤‘ í™”ë©´ì´ êº¼ì§€ì§€ ì•Šë„ë¡...
+    //    Screen.SetResolution(720, 1080, true); //í™”ë©´ ì„¤ì •
     //}
     void Update()
-    {//¸Å ÇÁ·¹ÀÓ¸¶´Ù ¸¶¿ì½ºÀÇ ¿òÁ÷ÀÓ¿¡ µû¶ó ¿òÁ÷ÀÌµµ·Ï...
+    {//ë§¤ í”„ë ˆì„ë§ˆë‹¤ ë§ˆìš°ìŠ¤ì˜ ì›€ì§ì„ì— ë”°ë¼ ì›€ì§ì´ë„ë¡...
         CrosshairMoving();
         ViewMoving();
     }
 
     void ViewMoving()
-    {//wasdÅ°¶û CrosshairÀ§Ä¡¸¦ ±â¹İÀ¸·Î 
+    {//wasdí‚¤ë‘ Crosshairìœ„ì¹˜ë¥¼ ê¸°ë°˜ìœ¼ë¡œ 
         if (tf_Crosshair.localPosition.x > (Screen.width / 2 - 100) || tf_Crosshair.localPosition.x < (Screen.width / 2 + 100))
         {
-            currentAngleY += (tf_Crosshair.localPosition.x > 0) ? sightSensitivity : -sightSensitivity;
+            currentAngleY += (tf_Crosshair.localPosition.x > 0) ? sightSensitivity : -sightSensitivity; //ì‚¼í•­ì—°ì‚°ì / ê´„í˜¸ì˜ ê°’ ì°¸ -> ì „ì: / falseë©´ ê·¸ ë°˜ëŒ€ì˜ ê°’ í• ë‹¹
+            //xyz íšŒì „ ê°’
+            tf_Cam.localEulerAngles
         }
 
     }
 
     void CrosshairMoving()
-    {//¸¶¿ì½ºÀÇ (ÁÂÇ¥°ª)À¸·Î ÁÂÇ¥°ª ¿òÁ÷ÀÌ±â
+    {//ë§ˆìš°ìŠ¤ì˜ (ì¢Œí‘œê°’)ìœ¼ë¡œ ì¢Œí‘œê°’ ì›€ì§ì´ê¸°
         //tf_Crosshair.localPosition = Input.mousePosition;
-        //-> ½ÇÁ¦ ¸¶¿ì½ºÄ¿¼­ÀÇ À§Ä¡¿Í È­¸é»óÀÇ Ä¿¼­ À§Ä¡°¡ ³Ê¹« ¸Ö´Ù...
+        //-> ì‹¤ì œ ë§ˆìš°ìŠ¤ì»¤ì„œì˜ ìœ„ì¹˜ì™€ í™”ë©´ìƒì˜ ì»¤ì„œ ìœ„ì¹˜ê°€ ë„ˆë¬´ ë©€ë‹¤...
         tf_Crosshair.localPosition = new Vector2(Input.mousePosition.x - (Screen.width / 2),
                                                  Input.mousePosition.y - (Screen.height / 2));
-        float t_cursorPosX = tf_Crosshair.localPosition.x; //¸¶¿ì½º Ä¿¼­°¡ È­¸é ¹ÛÀ¸·Î
-        float t_cursorPosY = tf_Crosshair.localPosition.y; //¹ş¾î³ªÁö ¾Êµµ·Ï                                                    
+        float t_cursorPosX = tf_Crosshair.localPosition.x; //ë§ˆìš°ìŠ¤ ì»¤ì„œê°€ í™”ë©´ ë°–ìœ¼ë¡œ
+        float t_cursorPosY = tf_Crosshair.localPosition.y; //ë²—ì–´ë‚˜ì§€ ì•Šë„ë¡                                                    
 
         t_cursorPosX = Mathf.Clamp(t_cursorPosX, (-Screen.width / 2 + 50), (Screen.width / 2 - 50));
         t_cursorPosY = Mathf.Clamp(t_cursorPosY, (-Screen.height / 2 + 50), (Screen.height / 2 - 50));
